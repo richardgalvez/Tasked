@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+  frontend:
+    build: frontend
+    ports:
+      - "5173:5173"
+  postgres-db:
+    image: postgres:17.0
+    ports: 
+    - "5432:5432"
+volumes:
+  db-data:
+    driver: local
