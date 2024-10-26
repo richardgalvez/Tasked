@@ -43,4 +43,4 @@ RUN python -m pip install --upgrade pip
 EXPOSE 8000
 
 # Run the application.
-CMD ["uvicorn", "main:app"]
+CMD ["uvicorn", "main:app", "--reload"]

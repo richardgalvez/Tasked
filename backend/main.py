@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from datetime import datetime
-from models import Task, session
+from db.models import Task, session
 
 app = FastAPI()
 
