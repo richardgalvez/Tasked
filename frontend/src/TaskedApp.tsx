@@ -1,14 +1,11 @@
 import { useState } from "react";
+import axios from "axios";
 
 interface TaskItem {
   id: string;
   description: string;
   is_done: boolean;
 }
-
-
-
-
 
 const TaskedApp = () => {
   const [tasks, setTasks] = useState<TaskItem[]>([]);
