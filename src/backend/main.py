@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from datetime import datetime
 from models import Task, session
 
 app = FastAPI()
@@ -9,11 +10,25 @@ async def get_all_tasks():
   return tasks_query.all()
 
 @app.post("/create")
-async def create_task(name: str, is_complete: bool = False):
-  task = Task(name=name, is_done=is_complete)
+async def create_task(
+  name: str, 
+  description: str = "", 
+  priority: str = "",
+  due_date: str = "",
+  is_done: bool = False,
+  ):
+  
+  task = Task(name=name, description=description, priority=priority, due_date=due_date, is_done=is_done)
   session.add(task)
   session.commit()
-  return {"Task Added": task.name}
+  return {
+    "Task Added": task.name,
+    "Description:": task.description,
+    "Priority:": task.priority,
+    "Due Date:": task.due_date,
+    "created_date:": task.created_date,
+    "Completed": task.is_done
+    }
 
 @app.get("/done")
 async def get_done_tasks():
@@ -25,13 +40,13 @@ async def get_done_tasks():
 async def update_task(
   id: int,
   new_name: str = "",
-  is_complete: bool = False
+  is_done: bool = False
 ):
   task_query = session.query(Task).filter(Task.id==id)
   task = task_query.first()
   if new_name:
     task.name = new_name
-  task.is_done = is_complete
+  task.is_done = is_done
   session.add(task)
   session.commit()
   return {"Task updated to": task.name}
