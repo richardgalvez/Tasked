@@ -1,25 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface TaskItem {
   id: string;
-  description: string;
+  name: string;
+  description?: string;
   is_done: boolean;
 }
 
 const TaskedApp = () => {
+  // TODO: Fix retrieval of task name rather than description
   const [tasks, setTasks] = useState<TaskItem[]>([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/tasks")
+      .then((response) => {
+        setTasks(response.data);
+      })
+      .catch((error) => {
+        console.log("There was an error retrieving the current task list:", error);
+      });
+  }, []);
+
   const [newTask, setNewTask] = useState('');
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/tasks");
+        setTasks(response.data);
+      } catch (error) {
+        console.error("There was an error fetching the tasks:", error);
+      }
+    };
+    fetchTasks();
+  }, []);
 
 // TODO: Implement for all data attributes to match Task from backend
-// TODO: Implement backend and db connection
-
   const createTask = () => {
     if (newTask !== '') {
       const newId = crypto.randomUUID();
       const newTaskItem: TaskItem = {
         id: newId,
-        description: newTask,
+        name: newTask,
         is_done: false,
       };
       setTasks([...tasks, newTaskItem]);
@@ -63,7 +85,7 @@ const TaskedApp = () => {
               onChange={() => toggleDone(task.id)}
             />
             <span style={{ textDecoration: task.is_done ? 'line-through' : 'none'}}>
-              {task.description}
+              {task.name} | {task.description}
             </span>
             <button onClick={() => deleteTask(task.id)}>Remove</button>
           </li>

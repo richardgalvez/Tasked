@@ -18,7 +18,7 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/tasks")
 async def get_all_tasks():
   tasks_query = session.query(Task)
   return tasks_query.all()
