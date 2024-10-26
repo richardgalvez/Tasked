@@ -14,10 +14,9 @@ async def create_task(
   name: str, 
   description: str = "", 
   priority: str = "",
-  due_date: str = "",
+  due_date: str = "yyyy-mm-dd",
   is_done: bool = False,
   ):
-  
   task = Task(name=name, description=description, priority=priority, due_date=due_date, is_done=is_done)
   session.add(task)
   session.commit()
