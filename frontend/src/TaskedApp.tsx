@@ -5,11 +5,12 @@ interface TaskItem {
   id: string;
   name: string;
   description?: string;
+  priority?: string;
+  dueDate: string;
   is_done: boolean;
 }
 
 const TaskedApp = () => {
-  // TODO: Fix retrieval of task name rather than description
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   useEffect(() => {
     axios
@@ -35,17 +36,29 @@ const TaskedApp = () => {
     fetchTasks();
   }, []);
 
-// TODO: Implement for all data attributes to match Task from backend
+// TODO: Implement for all CRUD operations from backend
+
+// TODO: Fix Create operation, 500 internal server error, could be wrong typing on id.
   const createTask = () => {
     if (newTask !== '') {
       const newId = crypto.randomUUID();
       const newTaskItem: TaskItem = {
         id: newId,
         name: newTask,
+        description: "",
+        priority: "",
+        dueDate: "",
         is_done: false,
       };
-      setTasks([...tasks, newTaskItem]);
-      setNewTask('');
+
+      //setTasks([...tasks, newTaskItem]);
+
+      setTasks((tasks) => [...tasks, newTaskItem]);
+      
+      axios.post("http://localhost:8000/create", newTaskItem).catch((error) => {
+        console.error("There was an error adding the task: ", error);
+      });
+      //setNewTask('');
     }
   };
 

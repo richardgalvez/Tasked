@@ -25,7 +25,8 @@ async def get_all_tasks():
 
 @app.post("/create")
 async def create_task(
-  name: str, 
+  id: str = "",
+  name: str = "", 
   description: str = "", 
   priority: str = "",
   due_date: str = "yyyy-mm-dd",
@@ -36,6 +37,7 @@ async def create_task(
   session.commit()
   return {
     "Task Added": task.name,
+    "Task ID": task.id,
     "Description:": task.description,
     "Priority:": task.priority,
     "Due Date:": task.due_date,
