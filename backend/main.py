@@ -1,7 +1,8 @@
+import uuid
 from fastapi import FastAPI
 from datetime import datetime
 from db.models import Task, session
-import uuid
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -20,33 +21,33 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
+# TODO: Re-add date-related attributes for TaskItem and creation
+class TaskItem(BaseModel):
+  id: str
+  name: str
+  description: str
+  priority: str
+  #due_date: str
+  #created_date: str
+  is_done: bool = False
+
 @app.get("/tasks")
 async def get_all_tasks():
   tasks_query = session.query(Task)
   return tasks_query.all()
 
 @app.post("/create")
-async def create_task(
-  id: str = str(uuid.uuid4()),
-  name: str = "", 
-  description: str = "", 
-  priority: str = "",
-  due_date: str = "yyyy-mm-dd",
-  created_date: str = datetime.today().strftime('%Y-%m-%d'),
-  is_done: bool = False,
-  ):
-  task = Task(id=id, name=name, description=description, priority=priority, due_date=due_date, created_date=created_date, is_done=is_done)
+async def create_task(task_item: TaskItem):
+  task = Task(
+    id=task_item.id, 
+    name=task_item.name, 
+    description=task_item.description,
+    priority=task_item.priority, 
+    is_done=task_item.is_done
+    )
   session.add(task)
   session.commit()
-  return {
-    "Task Added": task.name,
-    "Task ID": task.id,
-    "Description": task.description,
-    "Priority": task.priority,
-    "Due Date": task.due_date,
-    "Created On": task.created_date,
-    "Completed": task.is_done
-    }
+  return task_item
 
 @app.get("/done")
 async def get_done_tasks():

@@ -24,8 +24,8 @@ class Task(Base):
   name = Column(String(255), nullable=False)
   description = Column(Text)
   priority = Column(String(255))
-  due_date = Column(DateTime)
-  created_date = Column(DateTime)
+  #due_date = Column(DateTime)
+  #created_date = Column(DateTime)
   is_done = Column(Boolean, default=False)
   
-  Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)

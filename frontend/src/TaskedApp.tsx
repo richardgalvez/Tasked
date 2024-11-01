@@ -6,8 +6,8 @@ interface TaskItem {
   name: string;
   description?: string;
   priority?: string;
-  dueDate?: string;
-  createdDate: string;
+  //dueDate?: string;
+  //createdDate?: string;
   is_done: boolean;
 }
 
@@ -37,39 +37,37 @@ const TaskedApp = () => {
     fetchTasks();
   }, []);
 
-// TODO: Implement for all CRUD operations from backend
 
-// TODO: Fix Create operation, 500 internal server error, could be wrong typing on id.
+// TODO: Re-add date-related attributes for task creation
   const createTask = () => {
     if (newTask !== '') {
       const newId = crypto.randomUUID();
-      let today = new Date().toISOString().slice(0, 10)
+      //let today = new Date().toISOString().slice(0, 10)
       const newTaskItem: TaskItem = {
         id: newId,
         name: newTask,
         description: "",
         priority: "",
-        createdDate: today,
-        dueDate: today,
+        //createdDate: today,
+        //dueDate: today,
         is_done: false,
       };
-
-      //setTasks([...tasks, newTaskItem]);
 
       setTasks((tasks) => [...tasks, newTaskItem]);
       
       axios.post("http://localhost:8000/create", newTaskItem).catch((error) => {
         console.error("There was an error adding the task: ", error);
       });
-      // setNewTask('');
     }
   };
 
+  // TODO: Implement deletion for tasks
   const deleteTask = (id: string) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   };
 
+  // TODO: Implement option to update tasks
   const toggleDone = (id: string) => {
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
@@ -80,7 +78,8 @@ const TaskedApp = () => {
     setTasks(updatedTasks);
   };
 
-// TODO: Implement better formatting and responsive design
+// TODO: Implement better formatting and responsive design (later)
+// TODO: Implement inputs for description, priority, and eventually due date
   return (
     <div>
       <h1> Welcome to ⚙️ Tasked ⚙️</h1>
