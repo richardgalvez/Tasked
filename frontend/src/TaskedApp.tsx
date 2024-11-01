@@ -56,6 +56,10 @@ const TaskedApp = () => {
       axios.post("http://localhost:8000/create", newTaskItem).catch((error) => {
         console.error("There was an error adding the task: ", error);
       });
+      setNewTask('');;
+      setNewDescription('');
+      setNewPriority('');
+      setNewDueDate('');
     }
   };
 
@@ -82,62 +86,66 @@ const TaskedApp = () => {
     setTasks(updatedTasks);
   };
 
-// TODO: Implement better formatting and design for inputs
-  return (
+return (
+  <div className="container">
+    <h1>⚙️ Tasked ⚙️</h1>
+    <h2>Task management made simple.</h2>
     <div>
-      <h1> Welcome to ⚙️ Tasked ⚙️</h1>
-      <h2>👤 The Note Taking App for Everyone 👤</h2>
-      <h3>My Notes:</h3>
-      <input className="inputbox"
+      <input
+        className="inputbox"
         type="text"
-        value={newTask}
         placeholder="Task Name"
+        value={newTask}
         onChange={(e) => setNewTask(e.target.value)}
       />
-      <p></p>
-      <input className="inputbox"
+      <input
+        className="inputbox"
         type="text"
-        value={newDescription}
         placeholder="Description"
+        value={newDescription}
         onChange={(e) => setNewDescription(e.target.value)}
       />
-      <p></p>
-      <input className="inputbox"
+      <input
+        className="inputbox"
         type="text"
+        placeholder="Priority"
         value={newPriority}
-        placeholder="Priority Level"
         onChange={(e) => setNewPriority(e.target.value)}
       />
-      <p></p>
-      <input className="inputbox"
+      <input
+        className="inputbox"
         type="text"
-        value={newDueDate}
         placeholder="Due Date (yyyy-mm-dd)"
+        value={newDueDate}
         onChange={(e) => setNewDueDate(e.target.value)}
       />
-      <p></p>
-      <button onClick={createTask}>Create Task</button>
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
+      <button onClick={createTask}>Add Task</button>
+    </div>
+    <div className="separator"></div>
+    <h2>Your Current Tasks:</h2>
+    <ul className="task-list">
+      {tasks.map((task) => (
+        <li className="task-card" key={task.id}>
+          <div className="task-info">
             <input
+              className="checkbox"
               type="checkbox"
               checked={task.is_done}
               onChange={() => toggleDone(task.id)}
             />
-            <span style={{ textDecoration: task.is_done ? 'line-through' : 'none'}}>
+            <span style={{ textDecoration: task.is_done ? 'line-through' : 'none' }}>
               {task.name}
-              <p></p> 
-              Description: {task.description} || 
-              Priority: {task.priority} || 
-              Due Date: {task.due_date}
             </span>
-            <button onClick={() => deleteTask(task.id)}>Remove</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+            <p>Description: {task.description || "N/A"}</p>
+            <p>Priority: {task.priority || "N/A"}</p>
+            <p>Due Date: {task.due_date || "N/A"}</p>
+          </div>
+          <button className="remove-button" onClick={() => deleteTask(task.id)}>Remove</button>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 };
 
 export default TaskedApp;
