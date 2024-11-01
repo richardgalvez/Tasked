@@ -20,12 +20,12 @@ Base = declarative_base()
 
 class Task(Base):
   __tablename__ = "tasks"
-  id = Column(UUID, nullable= False, primary_key=True)
+  id = Column(UUID, nullable=False, primary_key=True)
   name = Column(String(255), nullable=False)
   description = Column(Text)
   priority = Column(String(255))
-  #due_date = Column(DateTime)
-  #created_date = Column(DateTime)
+  due_date = Column(Text)   # Convert data type to DateTime eventually
+  created_date = Column(DateTime)
   is_done = Column(Boolean, default=False)
   
 Base.metadata.create_all(engine)

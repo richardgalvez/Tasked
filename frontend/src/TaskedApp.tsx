@@ -6,8 +6,8 @@ interface TaskItem {
   name: string;
   description?: string;
   priority?: string;
-  //dueDate?: string;
-  //createdDate?: string;
+  due_date?: string | null;
+  created_date: string;
   is_done: boolean;
 }
 
@@ -25,6 +25,9 @@ const TaskedApp = () => {
   }, []);
 
   const [newTask, setNewTask] = useState('');
+  const [newDescription, setNewDescription] = useState("");
+  const [newPriority, setNewPriority] = useState("");
+  const [newDueDate, setNewDueDate] = useState("");
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -37,19 +40,15 @@ const TaskedApp = () => {
     fetchTasks();
   }, []);
 
-
-// TODO: Re-add date-related attributes for task creation
   const createTask = () => {
     if (newTask !== '') {
-      const newId = crypto.randomUUID();
-      //let today = new Date().toISOString().slice(0, 10)
       const newTaskItem: TaskItem = {
-        id: newId,
+        id: crypto.randomUUID(),
         name: newTask,
-        description: "",
-        priority: "",
-        //createdDate: today,
-        //dueDate: today,
+        description: newDescription,
+        priority: newPriority,
+        due_date: newDueDate,
+        created_date: new Date().toISOString().slice(0, 10),
         is_done: false,
       };
 
@@ -78,17 +77,31 @@ const TaskedApp = () => {
     setTasks(updatedTasks);
   };
 
-// TODO: Implement better formatting and responsive design (later)
-// TODO: Implement inputs for description, priority, and eventually due date
+// TODO: Implement better formatting and design for inputs
   return (
     <div>
       <h1> Welcome to ⚙️ Tasked ⚙️</h1>
       <h2>👤 The Note Taking App for Everyone 👤</h2>
-      <p>My Notes:</p>
+      <h3>My Notes:</h3>
       <input
         type="text"
         value={newTask}
         onChange={(e) => setNewTask(e.target.value)}
+      />
+      <input
+        type="text"
+        value={newDescription}
+        onChange={(e) => setNewDescription(e.target.value)}
+      />
+      <input
+        type="text"
+        value={newPriority}
+        onChange={(e) => setNewPriority(e.target.value)}
+      />
+      <input
+        type="text"
+        value={newDueDate}
+        onChange={(e) => setNewDueDate(e.target.value)}
       />
       <button onClick={createTask}>Create Task</button>
       <ul>

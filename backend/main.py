@@ -21,14 +21,13 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-# TODO: Re-add date-related attributes for TaskItem and creation
 class TaskItem(BaseModel):
   id: str
   name: str
   description: str
   priority: str
-  #due_date: str
-  #created_date: str
+  due_date: str
+  created_date: str
   is_done: bool = False
 
 @app.get("/tasks")
@@ -38,11 +37,14 @@ async def get_all_tasks():
 
 @app.post("/create")
 async def create_task(task_item: TaskItem):
+  # Mapping fields from TaskItem (incomnig JSON) to new 'task' SQLAlchemy instance 
   task = Task(
-    id=task_item.id, 
-    name=task_item.name, 
+    id=task_item.id,
+    name=task_item.name,
     description=task_item.description,
-    priority=task_item.priority, 
+    priority=task_item.priority,
+    due_date=task_item.due_date,
+    created_date=task_item.created_date,
     is_done=task_item.is_done
     )
   session.add(task)
