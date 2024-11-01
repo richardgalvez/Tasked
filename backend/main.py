@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 from datetime import datetime
 from db.models import Task, session
+import uuid
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 origins = [
   "http://localhost:5173",
-  "localhost:5173"
+  "https://localhost:5173",
+  "localhost:5173",
 ]
 
 app.add_middleware(
@@ -25,23 +27,24 @@ async def get_all_tasks():
 
 @app.post("/create")
 async def create_task(
-  id: str = "",
+  id: str = str(uuid.uuid4()),
   name: str = "", 
   description: str = "", 
   priority: str = "",
   due_date: str = "yyyy-mm-dd",
+  created_date: str = datetime.today().strftime('%Y-%m-%d'),
   is_done: bool = False,
   ):
-  task = Task(name=name, description=description, priority=priority, due_date=due_date, is_done=is_done)
+  task = Task(id=id, name=name, description=description, priority=priority, due_date=due_date, created_date=created_date, is_done=is_done)
   session.add(task)
   session.commit()
   return {
     "Task Added": task.name,
     "Task ID": task.id,
-    "Description:": task.description,
-    "Priority:": task.priority,
-    "Due Date:": task.due_date,
-    "created_date:": task.created_date,
+    "Description": task.description,
+    "Priority": task.priority,
+    "Due Date": task.due_date,
+    "Created On": task.created_date,
     "Completed": task.is_done
     }
 

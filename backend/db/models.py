@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, Text, String, Boolean, DateTime
+from sqlalchemy import create_engine, Column, Integer, Text, String, Boolean, DateTime, UUID
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, declarative_base
 from datetime import datetime
@@ -20,12 +20,12 @@ Base = declarative_base()
 
 class Task(Base):
   __tablename__ = "tasks"
-  id = Column(Integer, primary_key=True, autoincrement=True)
+  id = Column(UUID, nullable= False, primary_key=True)
   name = Column(String(255), nullable=False)
   description = Column(Text)
   priority = Column(String(255))
   due_date = Column(DateTime)
-  created_date = Column(DateTime, default=datetime.now)
+  created_date = Column(DateTime)
   is_done = Column(Boolean, default=False)
   
   Base.metadata.create_all(engine)

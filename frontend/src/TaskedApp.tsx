@@ -6,7 +6,8 @@ interface TaskItem {
   name: string;
   description?: string;
   priority?: string;
-  dueDate: string;
+  dueDate?: string;
+  createdDate: string;
   is_done: boolean;
 }
 
@@ -42,12 +43,14 @@ const TaskedApp = () => {
   const createTask = () => {
     if (newTask !== '') {
       const newId = crypto.randomUUID();
+      let today = new Date().toISOString().slice(0, 10)
       const newTaskItem: TaskItem = {
         id: newId,
         name: newTask,
         description: "",
         priority: "",
-        dueDate: "",
+        createdDate: today,
+        dueDate: today,
         is_done: false,
       };
 
@@ -58,7 +61,7 @@ const TaskedApp = () => {
       axios.post("http://localhost:8000/create", newTaskItem).catch((error) => {
         console.error("There was an error adding the task: ", error);
       });
-      //setNewTask('');
+      // setNewTask('');
     }
   };
 
