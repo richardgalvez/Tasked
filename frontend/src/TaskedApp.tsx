@@ -51,7 +51,6 @@ const TaskedApp = () => {
         created_date: new Date().toISOString().slice(0, 10),
         is_done: false,
       };
-
       setTasks((tasks) => [...tasks, newTaskItem]);
       
       axios.post("http://localhost:8000/create", newTaskItem).catch((error) => {
@@ -60,13 +59,19 @@ const TaskedApp = () => {
     }
   };
 
-  // TODO: Implement deletion for tasks
   const deleteTask = (id: string) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
-    setTasks(updatedTasks);
+    axios
+      .delete(`http://localhost:8000/delete/${id}`)
+      .then(() => {
+        const updatedTasks = tasks.filter((task) => task.id !== id);
+        setTasks(updatedTasks);
+      })
+      .catch((error) => {
+        console.error("There was an error deleting the task: ", error);
+      });
   };
 
-  // TODO: Implement option to update tasks
+  // TODO: Implement option to update tasks as DONE
   const toggleDone = (id: string) => {
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
@@ -83,26 +88,34 @@ const TaskedApp = () => {
       <h1> Welcome to ⚙️ Tasked ⚙️</h1>
       <h2>👤 The Note Taking App for Everyone 👤</h2>
       <h3>My Notes:</h3>
-      <input
+      <input className="inputbox"
         type="text"
         value={newTask}
+        placeholder="Task Name"
         onChange={(e) => setNewTask(e.target.value)}
       />
-      <input
+      <p></p>
+      <input className="inputbox"
         type="text"
         value={newDescription}
+        placeholder="Description"
         onChange={(e) => setNewDescription(e.target.value)}
       />
-      <input
+      <p></p>
+      <input className="inputbox"
         type="text"
         value={newPriority}
+        placeholder="Priority Level"
         onChange={(e) => setNewPriority(e.target.value)}
       />
-      <input
+      <p></p>
+      <input className="inputbox"
         type="text"
         value={newDueDate}
+        placeholder="Due Date (yyyy-mm-dd)"
         onChange={(e) => setNewDueDate(e.target.value)}
       />
+      <p></p>
       <button onClick={createTask}>Create Task</button>
       <ul>
         {tasks.map((task) => (
@@ -113,7 +126,11 @@ const TaskedApp = () => {
               onChange={() => toggleDone(task.id)}
             />
             <span style={{ textDecoration: task.is_done ? 'line-through' : 'none'}}>
-              {task.name} | {task.description}
+              {task.name}
+              <p></p> 
+              Description: {task.description} || 
+              Priority: {task.priority} || 
+              Due Date: {task.due_date}
             </span>
             <button onClick={() => deleteTask(task.id)}>Remove</button>
           </li>
