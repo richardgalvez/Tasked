@@ -75,16 +75,23 @@ const TaskedApp = () => {
       });
   };
 
-  // TODO: Implement option to update tasks as DONE
   const toggleDone = (id: string) => {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return { ...task, is_done: !task.is_done};
-      }
-      return task;
+    axios
+    .put(`http://localhost:8000/status/${id}`)
+    .then(() => {
+      setTasks((tasks) =>
+        tasks.map((task) => {
+          if (task.id === id) {
+            return { ...task, is_done: !task.is_done};
+          }
+          return task;
+        })
+      );
+    })
+    .catch((error) => {
+      console.error("There was an error updating the task: ", error.response);
     });
-    setTasks(updatedTasks);
-  };
+  }
 
 return (
   <div className="container">

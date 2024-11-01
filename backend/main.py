@@ -51,20 +51,20 @@ async def create_task(task_item: TaskItem):
   session.commit()
   return task_item
 
-@app.put("/update/{id}")
-async def update_task(
+# Update task as Completed
+@app.put("/status/{id}")
+async def complete_task(
   id: str,
-  # new_name: str,
   is_done: bool = False
 ):
   task_query = session.query(Task).filter(Task.id==id)
   task = task_query.first()
-  # if new_name:
-  #   task.name = new_name
-  task.is_done = is_done
+  if (task.is_done == False):
+    task.is_done = True
+  else: task.is_done = False
   session.add(task)
   session.commit()
-  return {"Task updated to": task.name}
+  return {"Task updated to": task.is_done}
 
 @app.delete("/delete/{id}")
 async def delete_task(id: str):
