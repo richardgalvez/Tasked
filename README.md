@@ -22,6 +22,6 @@ The application should be available as follows:
 
 localhost:8000 - FastAPI Backend (localhost:8000/docs for Swagger UI)
 
-local:5432 - Postgres DB
+localhost:5432 / postgres:5342 - Postgres DB
 
 localhost:5173 - React Frontend
