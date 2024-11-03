@@ -7,15 +7,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-hostname = socket.gethostname() + ":5173"
-http_hostname = "http://" +socket.gethostname() + ":5173"
-https_hostname = "https://" + socket.gethostname() + ":5173"
+hostname: str = socket.gethostname()
 
 # TODO: Update for containerized deployment
 origins = [
   "http://localhost:5173",
   "https://localhost:5173",
-  "localhost:5173",
+  "http://tasked.duckdns.org:5173",
+  "https://tasked.duckdns.org:5173"
 ]
 
 # origins = [
