@@ -14,12 +14,11 @@ interface TaskItem {
 
 // TODO: Update for containerized deployment
 const TaskedApp = () => {
-  // const hostname = location.hostname;
+  const hostname = location.hostname;
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   useEffect(() => {
     axios
-      // .get(`http://${hostname}:8000/tasks`)
-      .get("http://localhost:8000/tasks")
+      .get(`http://${hostname}:8000/tasks`)
       .then((response) => {
         setTasks(response.data);
       })
@@ -35,7 +34,7 @@ const TaskedApp = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/tasks");
+        const response = await axios.get(`http://${hostname}:8000/tasks`);
         setTasks(response.data);
       } catch (error) {
         console.error("There was an error fetching the tasks:", error);
@@ -47,7 +46,6 @@ const TaskedApp = () => {
   const createTask = () => {
     if (newTask !== '') {
       const newTaskItem: TaskItem = {
-        // id: crypto.randomUUID(),       // Only works in HTTPS context
         id: uuidv4(),
         name: newTask,
         description: newDescription,
@@ -58,7 +56,7 @@ const TaskedApp = () => {
       };
       setTasks((tasks) => [...tasks, newTaskItem]);
       
-      axios.post("http://localhost:8000/create", newTaskItem).catch((error) => {
+      axios.post(`http://${hostname}:8000/create`, newTaskItem).catch((error) => {
         console.error("There was an error adding the task: ", error);
       });
       setNewTask('');;
@@ -70,7 +68,7 @@ const TaskedApp = () => {
 
   const deleteTask = (id: string) => {
     axios
-      .delete(`http://localhost:8000/delete/${id}`)
+      .delete(`http://${hostname}:8000/delete/${id}`)
       .then(() => {
         const updatedTasks = tasks.filter((task) => task.id !== id);
         setTasks(updatedTasks);
@@ -82,7 +80,7 @@ const TaskedApp = () => {
 
   const toggleDone = (id: string) => {
     axios
-    .put(`http://localhost:8000/status/${id}`)
+    .put(`http://${hostname}:8000/status/${id}`)
     .then(() => {
       setTasks((tasks) =>
         tasks.map((task) => {
