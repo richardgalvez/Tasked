@@ -12,7 +12,6 @@ interface TaskItem {
   is_done: boolean;
 }
 
-// TODO: Update for containerized deployment
 const TaskedApp = () => {
   const hostname = location.hostname;
   const [tasks, setTasks] = useState<TaskItem[]>([]);
@@ -132,7 +131,7 @@ return (
       <button onClick={createTask}>Add Task</button>
     </div>
     <div className="separator"></div>
-    <h2>Your Current Tasks:</h2>
+    <h2>Current Tasks:</h2>
     <ul className="task-list">
       {tasks.map((task) => (
         <li className="task-card" key={task.id}>

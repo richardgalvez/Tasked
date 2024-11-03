@@ -27,7 +27,7 @@ services:
     container_name: tasked-frontend
     build: frontend
     ports:
-      - "5173:5173"
+      - "80:5173"
     networks:
       - tasked-net
 
