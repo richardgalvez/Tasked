@@ -14,8 +14,8 @@ docker compose up --build -d
 
 The application should be available as follows:
 
-localhost:8000 - FastAPI Backend (localhost:8000/docs for Swagger UI)
+<http://localhost> / <http://localhost:80>  - Main application UI (React Frontend)
+
+<http://localhost:8000> - FastAPI Backend (<http://localhost/docs:8000> for Swagger UI)
 
 localhost:5432 / postgres:5342 - Postgres DB
-
-localhost:5173 - React Frontend
