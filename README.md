@@ -6,13 +6,13 @@ Task management made simple.
 
 Install git, Docker, and Docker Compose to your machine. Clone this repository then change directory to root of the project.
 
-macOS:
+Linux (Ubuntu), macOS:
 
 ```bash
 docker compose up --build -d
 ```
 
-Linux (Debian/Ubuntu):
+Linux ():
 
 ```bash
 docker-compose up --build -d
