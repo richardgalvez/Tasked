@@ -5,10 +5,10 @@ from datetime import datetime
 
 url = URL.create(
   drivername="postgresql",
-  # username="postgres",
-  # password="",
-  host="localhost",
-  database="mydb",
+  username="tadmin",
+  password="troot",
+  host="postgres",
+  database="tasked-db",
   port=5432
 )
 

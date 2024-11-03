@@ -1,18 +1,40 @@
 services:
+  db:
+    container_name: tasked-db
+    image: postgres:17.0
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: tadmin
+      POSTGRES_PASSWORD: troot
+      POSTGRES_DB: tasked-db
+    networks:
+      - tasked-net
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: unless-stopped
   backend:
+    container_name: tasked-backend
     build: backend
     ports:
-      - "8080:8080"
+      - "8000:8000"
+    networks:
+      - tasked-net
     depends_on:
-      - postgres-db
+      - db
   frontend:
+    container_name: tasked-frontend
     build: frontend
     ports:
       - "5173:5173"
-  postgres-db:
-    image: postgres:17.0
-    ports: 
-    - "5432:5432"
+    networks:
+      - tasked-net
+
+networks:
+  tasked-net:
+    driver: bridge
+
 volumes:
   db-data:
     driver: local
