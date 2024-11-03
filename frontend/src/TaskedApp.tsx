@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import axios from "axios";
 
 interface TaskItem {
@@ -11,10 +12,13 @@ interface TaskItem {
   is_done: boolean;
 }
 
+// TODO: Update for containerized deployment
 const TaskedApp = () => {
+  // const hostname = location.hostname;
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   useEffect(() => {
     axios
+      // .get(`http://${hostname}:8000/tasks`)
       .get("http://localhost:8000/tasks")
       .then((response) => {
         setTasks(response.data);
@@ -43,7 +47,8 @@ const TaskedApp = () => {
   const createTask = () => {
     if (newTask !== '') {
       const newTaskItem: TaskItem = {
-        id: crypto.randomUUID(),
+        // id: crypto.randomUUID(),       // Only works in HTTPS context
+        id: uuidv4(),
         name: newTask,
         description: newDescription,
         priority: newPriority,

@@ -1,4 +1,4 @@
-import uuid
+import socket
 from fastapi import FastAPI
 from datetime import datetime
 from db.models import Task, session
@@ -7,15 +7,28 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+hostname = socket.gethostname() + ":5173"
+http_hostname = "http://" +socket.gethostname() + ":5173"
+https_hostname = "https://" + socket.gethostname() + ":5173"
+
+# TODO: Update for containerized deployment
 origins = [
   "http://localhost:5173",
   "https://localhost:5173",
   "localhost:5173",
 ]
 
+# origins = [
+#   hostname,
+#   http_hostname,
+#   https_hostname
+# ]
+
+# Testing with/without wildcard for containerized deployment
 app.add_middleware(
   CORSMiddleware,
   allow_origins=origins,
+  # allow_origins=["*"],
   allow_credentials=True,
   allow_methods=["*"],
   allow_headers=["*"],
