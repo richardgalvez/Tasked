@@ -12,12 +12,6 @@ Linux (Ubuntu), macOS:
 docker compose up --build -d
 ```
 
-Linux ():
-
-```bash
-docker-compose up --build -d
-```
-
 The application should be available as follows:
 
 localhost:8000 - FastAPI Backend (localhost:8000/docs for Swagger UI)
