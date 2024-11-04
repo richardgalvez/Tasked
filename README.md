@@ -2,6 +2,10 @@
 
 Task management made simple.
 
+*Preview:*
+
+![tasked](./img/tasked-preview.png)
+
 ## Deployment (Locally via Docker Compose)
 
 Install git, Docker, and Docker Compose to your machine. Clone this repository then change directory to root of the project.
