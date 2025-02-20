@@ -3,6 +3,7 @@ import pytest
 from main import app
 
 # Testing simple connection
+@pytest.fixture
 def client():
   with TestClient(app) as client:
     yield client
