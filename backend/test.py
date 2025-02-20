@@ -1,12 +1,10 @@
+from fastapi.testclient import TestClient
 import pytest
 from main import app
 
 # Testing simple connection
-
-@pytest.fixture
 def client():
-  app.config['TESTING'] = True
-  with app.test_client() as client:
+  with TestClient(app) as client:
     yield client
 
 def test_app_is_working(client):
