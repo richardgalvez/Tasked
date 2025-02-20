@@ -9,11 +9,9 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --upgrade pip
 
-# RUN pip install Cython numpy RUST
+# RUN pip install on requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-# RUN pip install fastapi uvicorn sqlalchemy psycopg2-binary
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

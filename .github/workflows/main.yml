@@ -1,0 +1,11 @@
+name: Tasked Backend CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code

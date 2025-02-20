@@ -1,5 +1,3 @@
-.DS_Store
-
 # Byte-compiled / optimized / DLL files
 *.py[cod]
 __pycache__/
@@ -56,6 +54,7 @@ dist-ssr
 *.local
 
 # Editor directories and files
+.vscode
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -65,3 +64,46 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local .terraform directories
+**/.terraform/*
+.terraform
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars and .env files, which are likely to contain sensitive data, such as
+# password, private keys, and other secrets. These should not be part of version 
+# control as they are data points which are potentially sensitive and subject 
+# to change depending on the environment.
+*.tfvars
+*.tfvars.json
+*.env
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore transient lock info files created by terraform apply
+.terraform.tfstate.lock.info
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+# example: *tfplan*
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore Terraform lock file
+.terraform.lock.hcl
