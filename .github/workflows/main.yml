@@ -4,7 +4,7 @@ on:
   push:
     branches: main
 
-# GitHub Actions looks at the project root directory when using '.', provide the filepath from that context as needed
+# GitHub Actions starts at the project root directory, so provide the filepath from that context as needed
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,4 +40,4 @@ jobs:
         - name: Testing with pytest
           run: |
             pip install pytest
-            pytest test.py
+            pytest ./backend/test.py
