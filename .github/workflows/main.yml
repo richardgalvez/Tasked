@@ -4,8 +4,8 @@ on:
   push:
     branches: main
 
-# GitHub Actions starts at the project root directory, so provide the filepath from that context as needed
 jobs:
+  # Build Job: Ensures that your image can be reliably reproduced. The build stage doesn’t necessarily need the image to be perfect for testing because it’s mainly preparing an artifact for the next stage.
   build:
     runs-on: ubuntu-latest
     steps:
@@ -20,15 +20,19 @@ jobs:
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           IMAGE_NAME: tasked-backend
+        # GitHub Actions starts at the project root directory, so provide the filepath from that context as needed
         run: |
           docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME ./backend
           docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
-          
+
+  # Test/Integration Job: Fully spin up and run tests against this live environment. This isolates your integration tests from your build process.
   test:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
           uses: actions/checkout@v4
+        - name: Spin up Docker Compose containers for live environment
+          run: docker compose up --build -d
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
@@ -41,3 +45,7 @@ jobs:
           run: |
             pip install pytest
             pytest ./backend/test.py
+        - name: Tear down Docker Compose containers
+          run: docker compose down
+
+  # Deployment: Only after all the tests pass, you push or promote the build artifact for further deployment.
