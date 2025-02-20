@@ -20,7 +20,7 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           IMAGE_NAME: tasked-backend
         run: |
-          docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME .
+          docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME ./backend
           docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
           
   test:
