@@ -25,28 +25,20 @@ jobs:
           docker build -t $DOCKERHUB_USERNAME/$IMAGE_NAME ./backend
           docker push $DOCKERHUB_USERNAME/$IMAGE_NAME:latest
 
-  # Test/Integration Job: Fully spin up and run tests against this live environment. This isolates your integration tests from your build process.
+  # Test/Integration Job: Spin up containers and run tests in the live environment. This isolates your integration tests from your build process.
   test:
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
           uses: actions/checkout@v4
-        - name: Spin up Docker Compose containers for live environment
-          run: docker compose up --build -d
-        - name: Wait 30 seconds
-          run: sleep 30
+        - name: Spin up Docker Compose containers for live backend environment
+          run: docker compose up --build -d db backend
         - name: Set up Python
           uses: actions/setup-python@v5
           with:
             python-version: '3.13'
-        - name: Install dependencies
-          run: |
-            python -m pip install --upgrade pip
-            pip install -r ./backend/requirements.txt
-        - name: Testing with pytest
-          run: |
-            pip install pytest
-            pytest ./backend/test.py
+        - name: Run integration tests in pytest container
+          run: docker compose run --rm test
         - name: Tear down Docker Compose containers
           run: docker compose down
 
